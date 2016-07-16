@@ -2,11 +2,8 @@ import mailler
 import os,sys
 import subprocess
 import time
-import mailler
-import os,sys
-import subprocess
-import time
 import voice as v
+import twitters
 loop_you_mp4 = 0
 loop_you_mp3 = 0 
 general_time_for_shutdown= 0
@@ -16,32 +13,37 @@ choosee = raw_input("Search with voice or just write  :  ")
 if choosee == "voice":
     while True:
         print "Listen is the keyword\nYou can speak ....   "
-        if v.voice() ==  "listen":
+        user_entry = v.voice()
+        if user_entry ==  "listen":
             
             try:
-                print "your command\n"
+                print "You activated the command system, please tell me what I do."
                 a = v.voice()
                 print "You said " + str(a)
     
                 if a == "search":
+                    print "\n\n-----Search System-----\n\n"
                     import webbrowser
                     print "Search with google"
-                    url = "https://www.google.com.tr/search?q={}".format(v.voice())  
+                    url = "https://www.google.com.tr/search?q={}".format(v.voice())
                     webbrowser.open(url)
+                   
                 elif a == "hello":
-                    import twitter
-                    api = twitter.Api(consumer_key='key',
-                              consumer_secret='key',
-                              access_token_key='key',
-                              access_token_secret='key')
-                    print "Say something to post  \n"
-                    post = v.voice()
-                    print post
+                    print "Hello, this script is a helper for people who wants a easy access on computer\n"
+                    print "and its under the develop. You can use, improve this script."
+ 
+                elif a == "apple" or a == "Apple":
+                    print "\n\n-----Twitter Share System-----\n\n"
+                    twitters.share()
+                    print "\n\n"
+                   
                     
-                    status = api.PostUpdate(post)
-            
+        
             except LookupError:                           
                 print "Could not understand audio"
+        else:
+            print "Could not understand audio, try again"
+            
                 
 elif choosee == "write":
     while True:
