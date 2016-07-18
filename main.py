@@ -4,43 +4,69 @@ import subprocess
 import time
 import voice as v
 import twitters
+import speech_recognition as vv
+import get_image as img
 loop_you_mp4 = 0
 loop_you_mp3 = 0 
 general_time_for_shutdown= 0
- 
+choosee=""
+while choosee != "write"or choosee != "voice":
+    choosee = raw_input("Search with voice or just write  :  ")
+    if choosee == "voice" or choosee == "write": break
 
-choosee = raw_input("Search with voice or just write  :  ")
-if choosee == "voice":
+if choosee== "voice":
     while True:
         print "Listen is the keyword\nYou can speak ....   "
-        user_entry = v.voice()
-        if user_entry ==  "listen":
-            
-            try:
-                print "You activated the command system, please tell me what I do."
-                a = v.voice()
-                print "You said " + str(a)
-    
-                if a == "search":
-                    print "\n\n-----Search System-----\n\n"
-                    import webbrowser
-                    print "Search with google"
-                    url = "https://www.google.com.tr/search?q={}".format(v.voice())
-                    webbrowser.open(url)
-                   
-                elif a == "hello":
-                    print "Hello, this script is a helper for people who wants a easy access on computer\n"
-                    print "and its under the develop. You can use, improve this script."
- 
-                elif a == "apple" or a == "Apple":
-                    print "\n\n-----Twitter Share System-----\n\n"
-                    twitters.share()
-                    print "\n\n"
-                   
-                    
-        
-            except LookupError:                           
-                print "Could not understand audio"
+        try:
+             user_entry = v.voice()
+             if user_entry == "listen":
+                 print "*\nYou activated the command system, please tell me what I do.\n"
+                 try:
+                     a = v.voice()
+                     print "You said " + str(a)
+
+                     if a == "search":
+                         print "\n\n-----Search System-----\n\n"
+                         import webbrowser
+
+                         print "Search with google"
+                         try:
+                             url = "https://www.google.com.tr/search?q={}".format(v.voice())
+                             webbrowser.open(url)
+                         except vv.UnknownValueError:
+                             print("Could not understand audio, try again")
+                         except vv.RequestError as e:
+                             print("Could not request results from Google Speech Recognition service; {0}".format(e))
+
+
+                     elif a == "hello":
+                         print "\n\nHello, this script is a helper for people who wants a easy access on computer\n"
+                         print "and its under the develop. You can use, improve this script.\n\n"
+
+                     elif a == "apple" or a == "Apple":
+                         print "\n\n-----Twitter Share System-----\n\n"
+                         twitters.share()
+                         print "\n\n"
+                     elif a == "bring picture" or a == "bring Picture" or a == "bring pictures" or a == "bring picture" or a == "bring image" or a == "brings image" or a == "bring images":
+                         img.download()
+                     elif a == "ip":
+                         output = subprocess.check_output(['cmd.exe', '/c ipconfig'])
+                         print output
+                     elif a == "mail":
+                         mailler.main()
+                     elif a == "write":
+                         print "will add."
+
+                 except vv.UnknownValueError:
+                     print("Could not understand audio, try again")
+                 except vv.RequestError as e:
+                     print("Could not request results from Google Speech Recognition service; {0}".format(e))
+        except vv.UnknownValueError:
+            print("Google Speech Recognition could not understand audio")
+        except vv.RequestError as e:
+            print("Could not request results from Google Speech Recognition service; {0}".format(e))
+
+
         else:
             print "Could not understand audio, try again"
             
@@ -118,10 +144,14 @@ elif choosee == "write":
                          continue
                 general_time_for_shutdown-=1
                 time.sleep(1)
+        elif data == "back":
+            mains()
             
 
                 
                     
-
+else:
+    print "Wrong text."
+    mains()
 
             
