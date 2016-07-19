@@ -17,7 +17,7 @@ def get_image(query_get):
   print url
   header = {'User-Agent': 'Mozilla/5.0'} 
   soup = get_soup(url,header)
-
+  
   images = [a['src'] for a in soup.find_all("img", {"src": re.compile("gstatic.com")})]
   #print images
   for img in images:
